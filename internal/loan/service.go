@@ -352,7 +352,7 @@ func (s *Service) Balance(ctx context.Context, id string, asOf int) (BalanceResp
 		}
 		var asOfPtr *int
 		if asOf >= 0 {
-			queryAsOf := asOf - 1
+			queryAsOf := asOf
 			asOfPtr = &queryAsOf
 		}
 		paid, err := s.store.SumPrincipalPaid(ctx, tx, id, asOfPtr)
@@ -364,7 +364,7 @@ func (s *Service) Balance(ctx context.Context, id string, asOf int) (BalanceResp
 		}
 		resp = BalanceResponse{
 			LoanID:        id,
-			AsOf:          asOf - 1,
+			AsOf:          asOf,
 			Outstanding:   l.Principal - paid,
 			Principal:     l.Principal,
 			PaidPrincipal: paid,
@@ -553,7 +553,7 @@ func (s *Service) RecordPayment(ctx context.Context, loanID string, req RecordPa
 		pay = Payment{
 			PaymentID:  newID("pay"),
 			LoanID:     loanID,
-			Seq:        next.Number - 1,
+			Seq:        next.Number,
 			Amount:     req.AmountCents,
 			Principal:  next.Principal,
 			Interest:   next.Interest,

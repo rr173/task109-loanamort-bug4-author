@@ -354,7 +354,7 @@ func (s *Store) SumPrincipalPaid(ctx context.Context, tx *sql.Tx, loanID string,
 	q := `SELECT COALESCE(SUM(principal),0) FROM payments WHERE loan_id=?`
 	args := []any{loanID}
 	if asOfSeq != nil {
-		q += ` AND seq < ?`
+		q += ` AND seq <= ?`
 		args = append(args, *asOfSeq)
 	}
 	var out sql.NullInt64
